@@ -1,5 +1,4 @@
 #include "pca.hpp"
-#include "eigen.hpp"
 
 PCA::PCA(unsigned int alpha) : alpha_(alpha)
 {
@@ -25,11 +24,11 @@ void PCA::fit(Matrix data)
      * 
      * Mx = X^t * X / n - 1
      */
-    data.rowwise() -= mean_vector;
+    data.rowwise() -= mean_vector.transpose();
     Matrix Mx = data.transpose() * data / (data.rows() - 1);
 
     /* Get first alpha eigenvalue/eigenvector pairs */
-    V_ = get_first_eigenvalues(Mx, alpha_, 5000, 1e-16).second;
+    V_ = get_first_eigenvalues(Mx, alpha_, 5000, 1e-8).second;
 }
 
 Matrix PCA::transform(Matrix X)
