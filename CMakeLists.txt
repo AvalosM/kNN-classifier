@@ -20,7 +20,11 @@ include_directories(extern/eigen)
 
 add_subdirectory(extern/pybind11)
 
-# pybind11_add_module(kNN-classifier-python)
+pybind11_add_module(kNN
+                    src/kNN-pybind11.cpp
+                    src/kNN.cpp
+                    src/pca.cpp
+                    src/eigen.cpp)
 
 set(CMAKE_INSTALL_PREFIX
         ${PROJECT_SOURCE_DIR}
@@ -28,8 +32,10 @@ set(CMAKE_INSTALL_PREFIX
 
 message(CMAKE_INSTALL_PREFIX = "${CMAKE_INSTALL_PREFIX}")
 
-# install(TARGETS kNN-classifier-python DESTINATION ${CMAKE_INSTALL_PREFIX}/notebooks)
+install(TARGETS kNN DESTINATION ${CMAKE_INSTALL_PREFIX}/notebooks)
 
 add_executable(kNN-classifier
                src/main.cpp
-               src/kNN.cpp)
+               src/kNN.cpp
+               src/eigen.cpp
+               src/pca.cpp)
