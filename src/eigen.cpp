@@ -22,7 +22,7 @@ std::pair<double, VectorXd> power_iteration(const Matrix &A, unsigned int num_it
     return std::make_pair(eigval, eigvec);
 }
 
-std::pair<VectorXd, Matrix> get_first_eigenvalues(const Matrix &X, unsigned int num, unsigned int num_iter, unsigned int eps)
+std::pair<VectorXd, Matrix> get_first_eigenvalues(const Matrix &X, unsigned int num, unsigned int num_iter, double eps)
 {
     Matrix A(X);
     VectorXd eigvalues(num);
@@ -34,7 +34,7 @@ std::pair<VectorXd, Matrix> get_first_eigenvalues(const Matrix &X, unsigned int 
         VectorXd eigvec = pi_res.second;
 
         eigvalues(i) = eigval;
-        eigvalues.col(i) = eigvec;
+        eigvectors.col(i) = eigvec;
 
         /* Deflation */
         A = A - eigval * eigvec * eigvec.transpose();
