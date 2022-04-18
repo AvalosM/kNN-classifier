@@ -15,8 +15,9 @@ PYBIND11_MODULE(kNN, m) {
     py::class_<PCA>(m, "PCA")
         .def(py::init<unsigned int>())
         .def("fit", &PCA::fit)
+        .def("transform", &PCA::transform)
         .def("setalpha", &PCA::setalpha)
-        .def("transform", &PCA::transform);
+        .def("pc_values", &PCA::pc_values);
     m.def(
         "power_iteration", &power_iteration,
         "Function that calculates the eigenvalue/eigenvector pair with max |eigval|)",

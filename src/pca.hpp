@@ -10,12 +10,16 @@ public:
 
     void fit(Matrix data);
 
+    Matrix transform(Matrix X);
+
     inline void setalpha(unsigned int alpha) { alpha_ = alpha; };
 
-    Matrix transform(Matrix X);
+    inline VectorXd pc_values() { return PC_values_; };
+
 private:
     unsigned int alpha_;
-    Matrix V_;
+    Matrix PC_;
+    VectorXd PC_values_;
 };
 
 #endif /* __PCA_HPP__ */
