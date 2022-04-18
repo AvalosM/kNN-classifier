@@ -2,23 +2,18 @@
 
 std::pair<double, VectorXd> power_iteration(const Matrix &A, unsigned int num_iter, double eps)
 {
-    VectorXd eigvec = VectorXd::Random(A.cols());
+    VectorXd prev_eigvec = VectorXd::Zero(A.cols());
+    VectorXd eigvec =  VectorXd::Random(A.cols());
     eigvec.normalize();
     double eigval = 0;
 
-    for (unsigned int i = 0; i < num_iter; i++) {
-        VectorXd Ab = A * eigvec;
-
-        /* Rayleigh quotient */
-        eigval = eigvec.dot(Ab) / eigvec.norm();
-
-        /* Check remainder against epsilon */
-        if ((Ab - eigval * eigvec).norm() < eps) break;
-
-        eigvec = Ab;
+    for (unsigned int i = 0; i < num_iter && (eigvec - prev_eigvec).norm() > eps; i++) {
+        prev_eigvec = eigvec;
+        eigvec = A * prev_eigvec;
+        eigval = prev_eigvec.dot(eigvec);
         eigvec.normalize();
     }
-
+    
     return std::make_pair(eigval, eigvec);
 }
 
@@ -30,14 +25,12 @@ std::pair<VectorXd, Matrix> get_first_eigenvalues(const Matrix &X, unsigned int 
 
     for (unsigned int i = 0; i < num; i++) {
         std::pair<double, VectorXd> pi_res = power_iteration(A, num_iter, eps);
-        double eigval = pi_res.first;
-        VectorXd eigvec = pi_res.second;
 
-        eigvalues(i) = eigval;
-        eigvectors.col(i) = eigvec;
+        eigvalues(i) = pi_res.first;
+        eigvectors.col(i) = pi_res.second;
 
         /* Deflation */
-        A = A - eigval * eigvec * eigvec.transpose();
+        A -= eigvalues(i) * eigvectors.col(i) * eigvectors.col(i).transpose();
     }
 
     return std::make_pair(eigvalues, eigvectors);
