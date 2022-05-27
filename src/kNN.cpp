@@ -24,9 +24,8 @@ VectorXi KNNClassifier::predict(Matrix X)
 
 Label KNNClassifier::predict_vector(const VectorXd &data_vector) const
 {
-    VectorXd distances = VectorXd::Zero(training_dataset_.rows());
     /* Calculate euclidean distance to training vectors */
-    distances = (training_dataset_.rowwise() - data_vector.transpose()).rowwise().norm();
+    VectorXd distances = (training_dataset_.rowwise() - data_vector.transpose()).rowwise().norm();
     
     VectorXi index_list = VectorXi(training_dataset_.rows());
     std::iota(index_list.begin(), index_list.end(), 0);

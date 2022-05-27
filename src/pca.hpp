@@ -2,7 +2,6 @@
 #define __PCA_HPP__
 
 #include "types.hpp"
-#include "eigen.hpp"
 
 class PCA {
 public:
